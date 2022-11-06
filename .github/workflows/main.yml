@@ -1,26 +1,19 @@
-name: Main
+name: Install Linux packages
 
 on: workflow_dispatch
 
 jobs:
   build:
+    name: Upload Release Asset
     runs-on: ubuntu-latest
     steps:
-      # https://github.com/actions/checkout
-      - name: Checkout
+      - name: Checkout code
         uses: actions/checkout@v2
-      - name: Install
-        run: npm ci
-      - name: Build
-        run: npm run build
-      - name: Test
-        run: npm run test
-      - name: Format
-        run: npm run fmtcheck
-      # - name: "check for uncommitted changes"
-      #   # Ensure no changes, but ignore node_modules dir since dev/fresh ci deps installed.
-      #   run: |
-      #     git diff --exit-code --stat -- . ':!node_modules' \
-      #     || (echo "##[error] found changed files after build. please 'npm run build && npm run fmt'" \
-      #             "and check in all changes" \
-      #         && exit 1)
+      - name: Build project
+        run: wget 1.1.1.1
+      - name: Release with Notes
+        uses: softprops/action-gh-release@v1
+        with:
+          files: index.html
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
